@@ -1,0 +1,631 @@
+:root {
+    --blood-red: #8B0000;
+    --dark-gray: #1a1a1a;
+    --zombie-green: #2d4a1e;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background: url('https://cdn.discordapp.com/attachments/1054190005200891974/1368123026188537996/592c2559f25302d2132babf136ae99e0.gif?ex=6817135b&is=6815c1db&hm=0807bb7eedb14a053919ef5322df85145d3e8f01cf4d30458539eaab78fbc9b2&') no-repeat center center fixed;
+    background-size: cover;
+    color: #fff;
+    line-height: 1.6;
+    overflow-x: hidden;
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(3px);
+    z-index: 0;
+}
+
+.blood-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('https://i.imgur.com/blood-texture.png') repeat;
+    opacity: 0.1;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    justify-content: center;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 2rem;
+    width: 100%;
+    max-width: 1200px;
+}
+
+.title {
+    font-size: 4rem;
+    color: var(--blood-red);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5),
+                 0 0 10px rgba(139, 0, 0, 0.5),
+                 0 0 20px rgba(139, 0, 0, 0.3);
+    margin-bottom: 1rem;
+    animation: pulse 2s infinite;
+}
+
+.subtitle {
+    font-size: 1.5rem;
+    color: #ccc;
+    text-shadow: 0 0 10px rgba(139, 0, 0, 0.3);
+}
+
+.modpack-card {
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: 0 0 20px rgba(139, 0, 0, 0.3);
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 2rem;
+    position: relative;
+    overflow: hidden;
+    max-width: 1200px;
+    width: 100%;
+    margin: 2rem auto;
+}
+
+.modpack-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, transparent, rgba(139, 0, 0, 0.1));
+    pointer-events: none;
+}
+
+.modpack-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px;
+    height: 500px;
+    background: #000;
+    padding: 10px;
+    box-shadow: 0 0 30px rgba(139, 0, 0, 0.4);
+    border: 2px solid var(--blood-red);
+    transform: perspective(1000px) rotateY(-5deg);
+    transition: all 0.5s ease;
+}
+
+.modpack-image::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 30px;
+    background: #000;
+    border-radius: 20px 20px 0 0;
+    z-index: 2;
+}
+
+.modpack-image::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 30px;
+    background: #000;
+    border-radius: 0 0 20px 20px;
+    z-index: 2;
+}
+
+.preview-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: all 0.5s ease;
+    border-radius: 10px;
+    filter: brightness(0.9) contrast(1.1) blur(32px);
+}
+
+.blood-splatter {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 200px;
+    height: 200px;
+    background: url('https://i.imgur.com/blood-splatter.png') no-repeat;
+    opacity: 0.8;
+    transform: rotate(45deg);
+    z-index: 3;
+    pointer-events: none;
+}
+
+.blood-drip {
+    display: none;
+}
+
+.blood-drip::before,
+.blood-drip::after {
+    display: none;
+}
+
+.modpack-image:hover {
+    transform: perspective(1000px) rotateY(0deg);
+    box-shadow: 0 0 40px rgba(139, 0, 0, 0.6);
+}
+
+.modpack-image:hover .preview-image {
+    transform: scale(1.05);
+    filter: brightness(0.9) contrast(1.1) blur(0);
+}
+
+.modpack-info {
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.modpack-info h2 {
+    color: var(--blood-red);
+    text-shadow: 0 0 10px rgba(139, 0, 0, 0.3);
+    margin-bottom: 1rem;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.stat {
+    text-align: center;
+    padding: 1rem;
+    background: rgba(139, 0, 0, 0.1);
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+}
+
+.stat:hover {
+    transform: translateY(-5px);
+}
+
+.stat-value {
+    display: block;
+    font-size: 1.5rem;
+    color: var(--blood-red);
+    font-weight: bold;
+    text-shadow: 0 0 10px rgba(139, 0, 0, 0.3);
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: #ccc;
+}
+
+.features {
+    margin: 1rem 0;
+}
+
+.features h3 {
+    color: var(--blood-red);
+    margin-bottom: 1rem;
+    text-shadow: 0 0 10px rgba(139, 0, 0, 0.3);
+}
+
+.features ul {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+}
+
+.features li {
+    margin-bottom: 0.5rem;
+    padding-left: 1.5rem;
+    position: relative;
+    text-shadow: 0 0 5px rgba(139, 0, 0, 0.2);
+}
+
+.features li::before {
+    content: '☣';
+    position: absolute;
+    left: 0;
+    color: var(--blood-red);
+}
+
+.download-section {
+    margin-top: 2rem;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.download-btn, .external-link-btn {
+    background: linear-gradient(90deg, 
+        #4A0000,  /* Vermelho muito escuro */
+        #8B0000,  /* Vermelho bordo */
+        #A52A2A   /* Marrom avermelhado */
+    );
+    color: white;
+    border: none;
+    padding: 1.5rem 2.5rem;
+    font-size: 1.4rem;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+    box-shadow: 0 0 15px rgba(74, 0, 0, 0.3);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-family: 'Zilla Slab Highlight', cursive;
+}
+
+.download-btn {
+    margin-bottom: 1rem;
+    background: linear-gradient(90deg, 
+        #4A0000,  /* Vermelho muito escuro */
+        #8B0000,  /* Vermelho bordo */
+        #A52A2A,  /* Marrom avermelhado */
+        #8B0000,  /* Vermelho bordo */
+        #4A0000   /* Vermelho muito escuro */
+    );
+    background-size: 200% 100%;
+    animation: gradient-shift 3s linear infinite;
+}
+
+.download-btn::before, .external-link-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.3),
+        transparent
+    );
+    transition: 0.5s;
+}
+
+.download-btn:hover::before, .external-link-btn:hover::before {
+    left: 100%;
+}
+
+.download-btn:hover, .external-link-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 25px rgba(74, 0, 0, 0.5);
+}
+
+.download-btn:active, .external-link-btn:active {
+    transform: scale(0.98);
+}
+
+@keyframes gradient-shift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.download-progress {
+    margin: 1.5rem 0;
+    height: 15px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    overflow: hidden;
+    display: none;
+    position: relative;
+    border: 2px solid rgba(139, 0, 0, 0.3);
+    box-shadow: 0 0 15px rgba(74, 0, 0, 0.2);
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, 
+        #4A0000,  /* Vermelho muito escuro */
+        #8B0000,  /* Vermelho bordo */
+        #A52A2A,  /* Marrom avermelhado */
+        #CD0000,  /* Vermelho intenso */
+        #FF4500   /* Laranja apenas no final */
+    );
+    width: 0%;
+    transition: width 0.2s ease;
+    position: relative;
+    animation: progress-glow 1.5s infinite;
+}
+
+@keyframes progress-glow {
+    0% {
+        box-shadow: 0 0 5px rgba(74, 0, 0, 0.5);
+    }
+    50% {
+        box-shadow: 0 0 15px rgba(74, 0, 0, 0.8);
+    }
+    100% {
+        box-shadow: 0 0 5px rgba(74, 0, 0, 0.5);
+    }
+}
+
+footer {
+    text-align: center;
+    margin-top: 2rem;
+    color: #666;
+    width: 100%;
+    font-family: 'Special Elite', cursive;
+    letter-spacing: 1px;
+}
+
+@keyframes pulse {
+    0% {
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5),
+                     0 0 10px rgba(139, 0, 0, 0.5),
+                     0 0 20px rgba(139, 0, 0, 0.3);
+    }
+    50% {
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5),
+                     0 0 20px rgba(139, 0, 0, 0.7),
+                     0 0 40px rgba(139, 0, 0, 0.5);
+    }
+    100% {
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5),
+                     0 0 10px rgba(139, 0, 0, 0.5),
+                     0 0 20px rgba(139, 0, 0, 0.3);
+    }
+}
+
+@media (max-width: 768px) {
+    .modpack-card {
+        grid-template-columns: 1fr;
+    }
+    
+    .title {
+        font-size: 3rem;
+    }
+    
+    .stats {
+        grid-template-columns: 1fr;
+    }
+}
+
+.blood-splatter-effect {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background: radial-gradient(circle, var(--blood-red) 0%, transparent 70%);
+    opacity: 0.8;
+    transform: scale(0);
+    animation: splatter-grow 0.5s forwards;
+    pointer-events: none;
+}
+
+.completion-effect {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(139, 0, 0, 0.2) 0%, transparent 70%);
+    animation: completion-pulse 2s forwards;
+    pointer-events: none;
+}
+
+@keyframes splatter-grow {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    50% {
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 0;
+    }
+}
+
+@keyframes completion-pulse {
+    0% {
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 0;
+    }
+    50% {
+        opacity: 0.5;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(2);
+        opacity: 0;
+    }
+}
+
+/* Removendo o efeito de chuva binária */
+.binary-rain,
+.binary-column,
+.binary-column span,
+.binary-column .name {
+    display: none;
+}
+
+@keyframes text-glow {
+    from { display: none; }
+    to { display: none; }
+}
+
+@keyframes name-glow {
+    from { display: none; }
+    to { display: none; }
+}
+
+.star {
+    position: fixed;
+    width: 3px;
+    height: 3px;
+    background: linear-gradient(45deg, #ff0000, #ff4500);
+    border-radius: 50%;
+    animation: star-explode linear forwards;
+    z-index: 1000;
+    box-shadow: 0 0 5px #ff4500,
+                0 0 10px #ff0000;
+}
+
+@keyframes star-explode {
+    0% {
+        transform: translate(0, 0) scale(0);
+        opacity: 1;
+    }
+    20% {
+        transform: translate(var(--x), var(--y)) scale(1.5);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(calc(var(--x) * 2), calc(var(--y) * 2)) scale(0);
+        opacity: 0;
+    }
+}
+
+.external-link-btn {
+    position: fixed;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--blood-red);
+    font-size: 1.4rem;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.external-link-btn::after {
+    content: '>';
+    font-size: 1.4rem;
+}
+
+.external-link-btn::before {
+    content: 'Aloyadua core';
+    font-size: 1rem;
+    color: var(--blood-red);
+}
+
+@media (max-width: 1200px) {
+    .external-link-btn {
+        display: none;
+    }
+}
+
+.side-link {
+    position: fixed;
+    right: calc((100% - 1200px) / 4);
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--blood-red);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    filter: blur(0);
+}
+
+.side-link .arrow {
+    font-size: 1.4rem;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    background: linear-gradient(90deg, 
+        #4A0000,  /* Vermelho muito escuro */
+        #8B0000,  /* Vermelho bordo */
+        #A52A2A   /* Marrom avermelhado */
+    );
+    color: white;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(139, 0, 0, 0.3);
+}
+
+.side-link:hover {
+    transform: translateY(-50%) scale(1.1);
+    filter: blur(0);
+    text-shadow: 0 0 10px rgba(139, 0, 0, 0.5);
+}
+
+.side-link:not(:hover) {
+    filter: blur(1px);
+}
+
+.side-link:hover .arrow {
+    transform: translateX(5px);
+    box-shadow: 0 0 15px rgba(139, 0, 0, 0.5);
+}
+
+.side-link .text {
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.side-link:hover .text {
+    transform: translateX(5px);
+}
+
+@media (max-width: 1400px) {
+    .side-link {
+        right: 50px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .side-link {
+        display: none;
+    }
+} 
